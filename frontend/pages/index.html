@@ -102,9 +102,9 @@
     });
      */
     //  获取图谱数据 + 学习数据（从后端接口）
-    async function fetchGraphData() {
+    async function fetchGraphData(userId) {
       try {
-        const res = await fetch('http://localhost:8000/api/module/group_loader'); // <-- 后端接口地址
+        const res = await fetch('http://localhost:8000/api/module/group_loader?user_id=${userId}'); // <-- 后端接口地址
         if (!res.ok) throw new Error('接口响应失败');
 
         const jsonData = await res.json();
@@ -123,8 +123,9 @@
     }
     async function initGraph() {
       try {
+        userId = 'userId'; // 模拟用户ID，实际应用中应从登录状态获取
         // 从后端加载数据
-        const data = await fetchGraphData();
+        const data = await fetchGraphData(userId);
         if (!data) return;
 
         graphData = {

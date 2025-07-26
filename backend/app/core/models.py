@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Enum, Text, UniqueConstraint
+from sqlalchemy import Column, Integer, String, Enum, Text, ForeignKey,UniqueConstraint
 from .config import Base
 
 class UserKnowledge(Base):
@@ -21,3 +21,22 @@ class UserTime(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     base_time = Column(Integer, default=0)
     advanced_time = Column(Integer, default=0) 
+
+class Node(Base):
+    __tablename__ = "nodes"
+
+    id = Column(String(50), primary_key=True, index=True)
+    label = Column(String(255), index=True)
+
+class Edge(Base):
+    __tablename__ = "edges"
+
+    id = Column(Integer, primary_key=True, index=True)
+    source_node = Column(String(50), ForeignKey("nodes.id"), primary_key=True)
+    target_node = Column(String(50), ForeignKey("nodes.id"), primary_key=True)
+
+class UserProgress(Base):
+    __tablename__ = "user_progress"
+
+    user_id = Column(String(50), index=True)
+    node_id = Column(String(50), ForeignKey("nodes.id"), primary_key=True)
